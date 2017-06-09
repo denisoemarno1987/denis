@@ -11,7 +11,7 @@ if($_GET['aksi'] == "home"){
             <div class='col-md-10 col-sm-10'>
                 <div class='panel panel-primary'><!--Panel -->
                     <div class='panel-heading'><!--Panel Header -->
-                        <span class='glyphicon glyphicon-dashboard'></span> User Login List
+                        <span class='glyphicon glyphicon-dashboard'></span> RSVP List
                     </div>
                     <div class='panel-body'><!--Panel Body -->
                         <div class='col-sm-12'>
@@ -19,11 +19,12 @@ if($_GET['aksi'] == "home"){
                                             <thead>
                                             <tr>                                            
                                                 <th>No.</th>
-                                                <th>Name</th>
-                                                <th>Company</th>
+                                                <th>Id Event</th>
+                                                <th>Customer Name</th>
+                                                <th>Company Name</th>
                                                 <th>Title</th>
                                                 <th>Email</th>
-                                                <th>Mobile Phone</th>
+                                                <th>Phone Number</th>
                                                 <th>Aksi</th>
                                             </tr>
                                             </thead>
@@ -33,15 +34,15 @@ if($_GET['aksi'] == "home"){
                                                     if($row['status'] != 0){
                                                     echo"<tr>
                                                             <td>".$i++."</td>
+                                                            <td>".$row["idEvent"]."</td>
                                                             <td>".$row["customerName"]."</td>
                                                             <td>".$row["companyName"]."</td>
                                                             <td>".$row["title"]."</td>
                                                             <td>".$row["email"]."</td>
                                                             <td>".$row["phoneNumber"]."</td>
-
                                                             <td>
                                                                 <a href='index.php?p=rsvp&aksi=update&code=".$row['idRsvp']."' class='btn btn-warning'>Edit</a>
-                                                                <a href='index.php?p=rspv&aksi=delete&code=".$row['idRsvp']."' class='btn btn-danger'>Hapus</a>
+                                                                <a href='index.php?p=rsvp&aksi=delete&code=".$row['idRsvp']."' class='btn btn-danger style='color:#c00;' Onclick='return ConfirmDelete();'>Hapus</a>
                                                             </td>
                                                         </tr>";
                                                     }
@@ -55,24 +56,26 @@ if($_GET['aksi'] == "home"){
 }
 //ini untuk insert data
 if($_GET['aksi'] == "insert"){
-    $NameErr = $CompanyErr = $TitleErr = $EmailErr = $phoneNumberErr = "";
-    $NameChace = $CompanyChace = $TitleChace = $EmailChace = $phoneNumberChace = "";
+    $CustomerNameErr = $CompanyNameErr = $TitleErr = $EmailErr = $PhoneNumberErr = "";
+    $CustomerNameChace = $CompanyNameChace = $TitleChace = $EmailChace = $PhoneNumberChace = "";
     $cekvalid = true;
+    $idEvent = "";
+    $dateStamp = date('Y/m/d H:i:s');
     if(isset($_POST['insert'])){
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (empty($_POST["customerName"])) {
-                $NameErr = "Name is required";
+                $CustomerNameErr = "Customer Name is required";
                 $cekvalid = false;
             }else{
-                $NameChace = test_input($_POST["customerName"]);
+                $CustomerNameChace = test_input($_POST["customerName"]);
                 $cekvalid = true;
             }
 
             if(empty($_POST["companyName"])){
-                $CompanyErr = "Company is required";
+                $CompanyNameErr = "Company Name is required";
                 $cekvalid = false;
             }else{
-                $CompanyChace = test_input($_POST["companyName"]);
+                $CompanyNameChace = test_input($_POST["companyName"]);
                 $cekvalid = true;
             }
 
@@ -93,19 +96,27 @@ if($_GET['aksi'] == "insert"){
             }
 
             if(empty($_POST["phoneNumber"])){
-                $phoneNumberErr = " Mobile Phone is required";
+                $PhoneNumberErr = "Phone Number is required";
                 $cekvalid = false;
             }else{
-                $phoneNumberChace = test_input($_POST["phoneNumber"]);
+                $PhoneNumberChace = test_input($_POST["phoneNumber"]);
                 $cekvalid = true;
             }
 
             if($cekvalid == true){
-               
-                $insert = "INSERT INTO rsvp (customerName, companyName, title, email, phoneNumber, status) 
-                            VALUES ('$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]','$_POST[phoneNumber]', 1)";
-                mysqli_query($conn, $insert);
-                header('Location: index.php?p=rsvp&aksi=home');
+                //cari id event dahulu
+                $EventNow = "SELECT * FROM event_now";   
+                $EventNows = mysqli_query($conn, $EventNow);
+
+                if(mysqli_num_rows($EventNows) > 0){
+                    while($dr = mysqli_fetch_assoc($EventNows)){
+                        $idEvent = $dr['event_now'];
+                    }
+                    $insert = "INSERT INTO rsvp(idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
+                                VALUES ('$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',0,0,0,'NONE', 1)";
+                    mysqli_query($conn, $insert);
+                    header('Location: index.php?p=rsvp&aksi=home');   
+                }                
             }
         }
     }
@@ -116,20 +127,20 @@ if($_GET['aksi'] == "insert"){
             <div class='col-md-10 col-sm-10'>
                 <div class='panel panel-primary'><!--Panel -->
                     <div class='panel-heading'><!--Panel Header -->
-                        <span class='glyphicon glyphicon-dashboard'></span> Insert User
+                        <span class='glyphicon glyphicon-dashboard'></span> Insert RSVP
                     </div>
                     <div class='panel-body'><!--Panel Body -->
                         <div class='col-sm-12'>
                             <form action='' method='POST' class='form-default col-sm-4'>
                                 <div class='form-group'>
-                                    <label>Name:</label>
-                                    <input type='text' class='form-control' name='customerName' value='".$NameChace."'>
-                                    <span class = 'error'>*".$NameErr."</span>
+                                    <label>Customer Name:</label>
+                                    <input type='text' class='form-control' name='customerName' value='".$CustomerNameChace."'>
+                                    <span class = 'error'>*".$CustomerNameErr."</span>
                                 </div>
                                 <div class='form-group'>
-                                    <label>Company:</label>
-                                    <input type='text' class='form-control' name='companyName' value='".$CompanyChace."'>
-                                    <span class = 'error'>*".$CompanyErr."</span>
+                                    <label>Company Name:</label>
+                                    <input type='text' class='form-control' name='companyName' value='".$CompanyNameChace."'>
+                                    <span class = 'error'>*".$CompanyNameErr."</span>
                                 </div>
                                 <div class='form-group'>
                                     <label>Title:</label>
@@ -141,13 +152,11 @@ if($_GET['aksi'] == "insert"){
                                     <input type='email' class='form-control' name='email' value='".$EmailChace."'>
                                     <span class = 'error'>*".$EmailErr."</span>
                                 </div>
-
                                 <div class='form-group'>
-                                    <label>Mobile Phone:</label>
-                                    <input type='text' class='form-control' name='phoneNumber' value='".$phoneNumberChace."'>
-                                    <span class = 'error'>*".$phoneNumberErr."</span>
+                                    <label>Phone Number:</label>
+                                    <input type='text' class='form-control' name='phoneNumber' value='".$PhoneNumberChace."'>
+                                    <span class = 'error'>*".$PhoneNumberErr."</span>
                                 </div>
-                                
                                 <div class='form-group'>
                                     <input type='submit' name='insert' class='btn btn-success' value='Simpan'>
                                     <a href='index.php?p=rsvp&aksi=home' class='btn btn-danger'>Kembali</a>
@@ -158,24 +167,27 @@ if($_GET['aksi'] == "insert"){
 }
 //ini untuk update
 if($_GET['aksi'] == "update" && $_GET['code'] != ""){
-    $NameErr = $CompanyErr = $TitleErr = $EmailErr = $phoneNumberErr = "";
-    $NameChace = $CompanyChace = $TitleChace = $EmailChace = $phoneNumberChace = "";
+    $code = $_GET['code'];
+    $CustomerNameErr = $CompanyNameErr = $TitleErr = $EmailErr = $PhoneNumberErr = "";
+    $CustomerNameChace = $CompanyNameChace = $TitleChace = $EmailChace = $PhoneNumberChace = "";
     $cekvalid = true;
+    $idEvent = "";
+    $dateStamp = date('Y/m/d H:i:s');
     if(isset($_POST['update'])){
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (empty($_POST["customerName"])) {
-                $NameErr = "Name is required";
+           if (empty($_POST["customerName"])) {
+                $CustomerNameErr = "Customer Name is required";
                 $cekvalid = false;
             }else{
-                $NameChace = test_input($_POST["customerName"]);
+                $CustomerNameChace = test_input($_POST["customerName"]);
                 $cekvalid = true;
             }
 
             if(empty($_POST["companyName"])){
-                $CompanyErr = "Company is required";
+                $CompanyNameErr = "Company Name is required";
                 $cekvalid = false;
             }else{
-                $CompanyChace = test_input($_POST["companyName"]);
+                $CompanyNameChace = test_input($_POST["companyName"]);
                 $cekvalid = true;
             }
 
@@ -196,24 +208,37 @@ if($_GET['aksi'] == "update" && $_GET['code'] != ""){
             }
 
             if(empty($_POST["phoneNumber"])){
-                $phoneNumberErr = " Mobile Phone is required";
+                $PhoneNumberErr = "Phone Number is required";
                 $cekvalid = false;
             }else{
-                $phoneNumberChace = test_input($_POST["phoneNumber"]);
+                $PhoneNumberChace = test_input($_POST["phoneNumber"]);
                 $cekvalid = true;
             }
             if($cekvalid == true){
-                
-                $update = "UPDATE rsvp SET customerName = '$_POST[customerName]', companyName='$_POST[companyName]',
-                            title = '$_POST[title]', email='$_POST[email]', phoneNumber='$_POST[phoneNumber]'
-                            WHERE idRsvp = '$code'";
+                //cari id event dahulu
+                $EventNow = "SELECT * FROM event_now";   
+                $EventNows = mysqli_query($conn, $EventNow);
+
+                if(mysqli_num_rows($EventNows) > 0){
+                    while($dr = mysqli_fetch_assoc($EventNows)){
+                        $idEvent = $dr['event_now'];
+                    }
+                    $update = "UPDATE rsvp SET idEvent = '$idEvent',
+                                               customerName = '$_POST[customerName]',
+                                               companyName = '$_POST[companyName]',
+                                               title = '$_POST[title]',
+                                               email = '$_POST[email]',
+                                               phoneNumber = '$_POST[phoneNumber]',
+                                               modified = '$dateStamp'
+                               WHERE idRsvp = '$code'";
                     mysqli_query($conn, $update);
-                   header('Location: index.php?p=rsvp&aksi=home');
-            }
+                    header('Location: index.php?p=rsvp&aksi=home');
+                }
+
         }
     }
-
-    $cek = "SELECT * FROM rsvp WHERE idRsvp = '$code'";   
+  }  
+    $cek = "SELECT * FROM rsvp WHERE idRsvp='$code'";   
     $ceks = mysqli_query($conn, $cek);
 
     if(mysqli_num_rows($ceks) > 0){
@@ -229,16 +254,16 @@ if($_GET['aksi'] == "update" && $_GET['code'] != ""){
                     <div class='panel-body'><!--Panel Body -->
                         <div class='col-sm-12'>
                             <form action='' method='POST' class='form-default col-sm-4'>";
-    while($row = mysqli_fetch_assoc($ceks)){
-                             echo"<div class='form-group'>
-                                    <label>Name:</label>
+        while($row = mysqli_fetch_assoc($ceks)){
+            echo"<div class='form-group'>
+                                    <label>Customer Name:</label>
                                     <input type='text' class='form-control' name='customerName' value='".$row['customerName']."'>
-                                    <span class = 'error'>*".$NameErr."</span>
+                                    <span class = 'error'>*".$CustomerNameErr."</span>
                                 </div>
                                 <div class='form-group'>
-                                    <label>Company:</label>
+                                    <label>Company Name:</label>
                                     <input type='text' class='form-control' name='companyName' value='".$row['companyName']."'>
-                                    <span class = 'error'>*".$CompanyErr."</span>
+                                    <span class = 'error'>*".$CompanyNameErr."</span>
                                 </div>
                                 <div class='form-group'>
                                     <label>Title:</label>
@@ -250,13 +275,11 @@ if($_GET['aksi'] == "update" && $_GET['code'] != ""){
                                     <input type='email' class='form-control' name='email' value='".$row['email']."'>
                                     <span class = 'error'>*".$EmailErr."</span>
                                 </div>
-
                                 <div class='form-group'>
-                                    <label>Mobile Phone:</label>
-                                    <input type='text' class='form-control' name='phoneNumber' value='".$$row['phoneNumber']."'>
-                                    <span class = 'error'>*".$phoneNumberErr."</span>
+                                    <label>Phone Number:</label>
+                                    <input type='text' class='form-control' name='phoneNumber' value='".$row['phoneNumber']."'>
+                                    <span class = 'error'>*".$PhoneNumberErr."</span>
                                 </div>
-                                
                                 <div class='form-group'>
                                     <input type='submit' name='update' class='btn btn-success' value='Simpan'>
                                     <a href='index.php?p=rsvp&aksi=home' class='btn btn-danger'>Kembali</a>
@@ -267,6 +290,8 @@ if($_GET['aksi'] == "update" && $_GET['code'] != ""){
         }
     }
 }
+
+
 //ini untuk delete
 if($_GET['aksi'] == "delete" && $_GET['code'] != ""){
     $code = $_GET['code'];

@@ -36,7 +36,7 @@ if($_GET['aksi'] == "home"){
                                                             <td>".$row["level"]."</td>
                                                             <td>
                                                                 <a href='index.php?p=user_login&aksi=update&code=".$row['id_user']."' class='btn btn-warning'>Edit</a>
-                                                                <a href='index.php?p=user_login&aksi=delete&code=".$row['id_user']."' class='btn btn-danger style='color:#c00;' onclick='return compirm('apa anda yakin ?')'>Hapus</a>
+                                                                <a href='index.php?p=user_login&aksi=delete&code=".$row['id_user']."' class='btn btn-danger style='color:#c00;' Onclick='return ConfirmDelete();'>Hapus</a>
                                                             </td>
                                                         </tr>";
                                                     }
