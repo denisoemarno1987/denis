@@ -56,14 +56,27 @@ date_default_timezone_set('Asia/Jakarta');
         <!-- Javascript -->
         <script src="../bootstrap/js/jquery-1.9.1.min.js"></script>
         <script src="../bootstrap/js/bootstrap-datepicker.js"></script>
-        <script type="text/javascript">
-            //datepicker
-            $(document).ready(function () {                
-                $('#example1').datepicker({
-                    format: "dd/mm/yyyy"
-                });
-            });
+        <script src="../bootstrap/js/plugins/dataTables/jquery.dataTables.js"></script>
+        <script src="../bootstrap/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+        <script src="../bootstrap/chart/code/highcharts.js"></script>
+        <script src="../bootstrap/chart/code/modules/exporting.js"></script>
+
+        <script>
+            function ConfirmDelete()
+            {
+            var x = confirm("Are you sure you want to delete?");
+            if (x)
+                return true;
+            else
+                return false;
+            }
         </script>
+        <!-- Page-Level Demo Scripts - Tables - Use for reference -->
+    <script>
+    $(document).ready(function() {
+        $('.data').dataTable();
+    });
+    </script>
         <!-- End Of Javascript -->
     </body>
 </html>
