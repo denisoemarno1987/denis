@@ -1,76 +1,107 @@
-<?php
-
-$koneksi   	= mysqli_connect("localhost", "root", "", "admin");
-$event 		= mysqli_query($koneksi, "SELECT idEvent FROM rsvp WHERE idEvent='3' order by idRsvp asc");
-$rsvp  		= mysqli_query($koneksi, "SELECT idRsvp FROM rsvp WHERE idEvent='3' order by idRsvp asc");
-
-
-?>
+<!DOCTYPE HTML>
 <html>
-    <head>
-        <title>Belajarphp.net - ChartJS</title>
-        <script src="../bootstrap/Chart.js/Chart.bundle.js"></script>
- 
-        <style type="../bootstrap/Chart.js/text/css">
-            .container {
-                width: 50%;
-                margin: 15px auto;
-            }
-        </style>
-    </head>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Highcharts Example</title>
 
-<div class="container">
+		<style type="text/css">
 
-                                <canvas id="myChart" width="10" height="10"></canvas>
+		</style>
+	</head>
+	<body>
+<script src="../bootstrap/chart/code/highcharts.js"></script>
+<script src="../bootstrap/chart/code/modules/exporting.js"></script>
+
+    <body>
+
+    <div class="panel-content">
+        <div class="container-fluid">
+            <div class="row">
+            <div class="col-md-10 col-sm-10">
+                <div class="panel panel-primary"><!--Panel -->
+                    <div class="panel-heading"><!--Panel Header -->
+                        <span class="glyphicon glyphicon-dashboard"></span> Chart Event List
+                    </div>
+                <div class="panel-body"><!--Panel Body -->
+
+								
+					<div id="container" style="min-width: 310px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+
+
+
+							<script type="text/javascript">
+
+									Highcharts.chart('container', {
+									    chart: {
+									        type: 'bar'
+									    },
+									    title: {
+									        text: 'Historic World Population by Region'
+									    },
+									    subtitle: {
+									        text: ''
+									    },
+									    xAxis: {
+									        categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania'],
+									        title: {
+									            text: null
+									        }
+									    },
+									    yAxis: {
+									        min: 0,
+									        title: {
+									            text: 'Population (millions)',
+									            align: 'high'
+									        },
+									        labels: {
+									            overflow: 'justify'
+									        }
+									    },
+									    tooltip: {
+									        valueSuffix: ' millions'
+									    },
+									    plotOptions: {
+									        bar: {
+									            dataLabels: {
+									                enabled: true
+									            }
+									        }
+									    },
+									    legend: {
+									        layout: 'vertical',
+									        align: 'right',
+									        verticalAlign: 'top',
+									        x: -40,
+									        y: 80,
+									        floating: true,
+									        borderWidth: 1,
+									        backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+									        shadow: true
+									    },
+									    credits: {
+									        enabled: false
+									    },
+									    series: [{
+									        name: 'Year 1800',
+									        data: [107, 31, 635, 203, 2]
+									    }, {
+									        name: 'Year 1900',
+									        data: [133, 156, 947, 408, 6]
+									    }, {
+									        name: 'Year 2012',
+									        data: [1052, 954, 4250, 740, 38]
+									    }]
+									});
+							</script>                              
                          </div>
-                                <script>
-                                    var ctx = document.getElementById("myChart");
-                                    var myChart = new Chart(ctx, {
-                                        type: 'bar',
-                                        data: {
-                                            labels: [<?php while ($b = mysqli_fetch_array($event)) { echo '"' . $b['idEvent'] . '",';}?>],
-                                            datasets: [{
-                                                    label: '# of Votes',
-                                                    data: [<?php while ($p = mysqli_fetch_array($rsvp)) { echo '"' . $p['idRsvp'] . '",';}?>],
-                                                    backgroundColor: [
-                                                        'rgba(255, 99, 132, 0.2)',
-                                                        'rgba(54, 162, 235, 0.2)',
-                                                        'rgba(255, 206, 86, 0.2)',
-                                                        'rgba(75, 192, 192, 0.2)',
-                                                        'rgba(153, 102, 255, 0.2)',
-                                                        'rgba(255, 159, 64, 0.2)',
-                                                        'rgba(255, 99, 132, 0.2)',
-                                                        'rgba(54, 162, 235, 0.2)',
-                                                        'rgba(255, 206, 86, 0.2)',
-                                                        'rgba(75, 192, 192, 0.2)',
-                                                        'rgba(153, 102, 255, 0.2)',
-                                                        'rgba(255, 159, 64, 0.2)'
-                                                    ],
-                                                    borderColor: [
-                                                        'rgba(255,99,132,1)',
-                                                        'rgba(54, 162, 235, 1)',
-                                                        'rgba(255, 206, 86, 1)',
-                                                        'rgba(75, 192, 192, 1)',
-                                                        'rgba(153, 102, 255, 1)',
-                                                        'rgba(255, 159, 64, 1)',
-                                                        'rgba(255, 99, 132, 0.2)',
-                                                        'rgba(54, 162, 235, 0.2)',
-                                                        'rgba(255, 206, 86, 0.2)',
-                                                        'rgba(75, 192, 192, 0.2)',
-                                                        'rgba(153, 102, 255, 0.2)',
-                                                        'rgba(255, 159, 64, 0.2)'
-                                                    ],
-                                                    borderWidth: 1
-                                                }]
-                                        },
-                                        options: {
-                                            scales: {
-                                                yAxes: [{
-                                                        ticks: {
-                                                            beginAtZero: true
-                                                        }
-                                                    }]
-                                            }
-                                        }
-                                    });
-                                </script>
+                        </div>
+                    </div>  
+
+                </div>
+            </div>
+       </div>
+              
+	
+
+</body>
+</html>

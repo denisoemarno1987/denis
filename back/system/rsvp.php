@@ -15,7 +15,7 @@ if($_GET['aksi'] == "home"){
                     </div>
                     <div class='panel-body'><!--Panel Body -->
                         <div class='col-sm-12'>
-                            <table class='table table-hover'>
+                            <table class='table table-striped table-bordered data'>
                                             <thead>
                                             <tr>                                            
                                                 <th>No.</th>
