@@ -147,6 +147,7 @@ if($_GET['aksi'] == "insert"){
                         <div class='col-sm-12'>
                             <form action='' method='POST' class='form-default col-sm-4'>
                                 <div class='form-group'>
+                                <p>Registration Date</p>
                                     <label>Start Date:</label>
                                     <input type='text' class='form-control' name='start_date' value='".$StartDateChace."' data-provide='datepicker' data-date-format='yyyy/mm/dd'>
                                     <span class = 'error'>*".$StartDateErr."</span>
@@ -157,6 +158,7 @@ if($_GET['aksi'] == "insert"){
                                     <span class = 'error'>*".$EndDateErr."</span>
                                 </div>
                                 <div class='form-group'>
+                                <p>Event Date</p>
                                     <label>From Date:</label>
                                     <input type='text' class='form-control' name='from_date' value='".$FromDateChace."' data-provide='datepicker' data-date-format='yyyy/mm/dd'>
                                     <span class = 'error'>*".$FromDateErr."</span>
