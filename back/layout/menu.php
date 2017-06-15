@@ -3,11 +3,11 @@
             <div class="navbar-header">
                 <a class="navbar-brand" href="#">#NgeCodeAja</a>
             </div>
-            <ul class="nav navbar-nav navbar-right">
+            <!-- <ul class="nav navbar-nav navbar-right">
                 <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 <li><a href="index.php?logout=1"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-            </ul>
+            </ul> -->
         </div>
         </nav>
         <div class="panel-header col-md-2">
@@ -24,26 +24,27 @@
                 </div>    
                 <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Dashboard<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-dashboard"></span></a></li>
+                <li class="active"><a href="index.php?p=chart&aksi=home">Dashboard<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-dashboard"></span></a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Setting <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-hdd"></span></a>
                     <ul class="dropdown-menu forAnimate" role="menu">
                     <li><a href="index.php?p=user_login&aksi=home">User Login</a></li>
-                    <li><a href="#">Event</a></li>
+                    <li><a href="index.php?p=eventlist&aksi=home">Event List</a></li>
+                    <li><a href="index.php?p=import&aksi=ImportCSV">Import</a></li>                    
                     </ul>
                 </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">Master <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-transfer"></span></a>
                     <ul class="dropdown-menu forAnimate" role="menu">
                     <li><a href="index.php?p=rsvp&aksi=home">Rsvp List</a></li>
-                    <li><a href="#">Sub Menu-2</a></li>
+                    
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Menu-3 <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Reporting <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file"></span></a>
                     <ul class="dropdown-menu forAnimate" role="menu">
-                    <li><a href="#">Sub Menu-1</a></li>
-                    <li><a href="#">Sub Menu-2</a></li>
+                    <li><a href="index.php?p=export&aksi=Rsvp">Export Rsvp</a></li>
+                    <li><a href="index.php?p=export&aksi=WalkIn">Export Rsvp by WalkIn</a></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -58,7 +59,7 @@
                     <ul class="dropdown-menu forAnimate" role="menu">
                     <li><a href="#"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-lock"></span> Ubah Password</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                    <li><a href="index.php?logout=1"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                     </ul>
                 </li>
                 </ul>
