@@ -113,7 +113,7 @@ if($_GET['aksi'] == "insert"){
                         $idEvent = $dr['event_now'];
                     }
                     $insert = "INSERT INTO rsvp(idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
-                                VALUES ('$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',0,0,0,'NONE', 1)";
+                                VALUES ('$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',1,0,0,'NONE', 1)";
                     mysqli_query($conn, $insert);
                     header('Location: index.php?p=rsvp&aksi=home');   
                 }                
