@@ -1,0 +1,14 @@
+@font-face {
+    font-family:hp_reg;
+    src:url(../fonts/HPSimplified_Rg.ttf);
+}
+
+@font-face {
+    font-family:hp_light;
+    src:url(../fonts/HPSimplified_Lt.ttf);
+}
+
+@font-face {
+    font-family:hp_bold;
+    src:url(../fonts/HPSimplified_Bd.ttf);
+}
