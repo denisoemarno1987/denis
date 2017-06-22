@@ -108,12 +108,37 @@ if($_GET['aksi'] == "insert"){
                 $EventNow = "SELECT * FROM event_now";   
                 $EventNows = mysqli_query($conn, $EventNow);
 
+                //Generate Code
+                $tahun = date("Y");
+                $tahun = trim($tahun, "2");
+                $bulan = date("m");
+                $tanggal = date("d");
+                $CodeCount = "0001";
+                $AutoCode = 0;
+
+                $query = "SELECT MAX(cast(idRsvp as decimal)) id FROM rsvp";
+                if($hasil = mysqli_query($conn, $query)){
+                    $row = mysqli_fetch_assoc($hasil);
+                    $count = $row['id'];
+                    $count = $count+1;
+
+                    $CodeCount = str_pad($count, 4, "0", STR_PAD_LEFT);
+                    $AutoCode = $CodeCount;
+                        
+                    if($AutoCode == "0001"){
+                        $AutoCode = $tahun.$bulan.$tanggal.$CodeCount;
+                    }
+                    else{
+                        $AutoCode = "0".$CodeCount;
+                    }    
+                }
+                //End Of Generate Code
                 if(mysqli_num_rows($EventNows) > 0){
                     while($dr = mysqli_fetch_assoc($EventNows)){
                         $idEvent = $dr['event_now'];
                     }
-                    $insert = "INSERT INTO rsvp(idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
-                                VALUES ('$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',1,0,0,'NONE', 1)";
+                    $insert = "INSERT INTO rsvp(idRsvp, idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
+                                VALUES ('$AutoCode', '$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',1,0,0,'NONE', 1)";
                     mysqli_query($conn, $insert);
                     header('Location: index.php?p=rsvp&aksi=home');   
                 }                
