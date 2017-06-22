@@ -57,12 +57,38 @@ if(isset($_POST['done_Rspv'])){
                 $EventNow = "SELECT * FROM event_now";   
                 $EventNows = mysqli_query($conn, $EventNow);
 
+                //Generate Code
+                $tahun = date("Y");
+                $tahun = trim($tahun, "2");
+                $bulan = date("m");
+                $tanggal = date("d");
+                $CodeCount = "0001";
+                $AutoCode = 0;
+
+                $query = "SELECT MAX(cast(idRsvp as decimal)) id FROM rsvp";
+                if($hasil = mysqli_query($conn, $query)){
+                    $row = mysqli_fetch_assoc($hasil);
+                    $count = $row['id'];
+                    $count = $count+1;
+
+                    $CodeCount = str_pad($count, 4, "0", STR_PAD_LEFT);
+                    $AutoCode = $CodeCount;
+                        
+                    if($AutoCode == "0001"){
+                        $AutoCode = $tahun.$bulan.$tanggal.$CodeCount;
+                    }
+                    else{
+                        $AutoCode = "0".$CodeCount;
+                    }    
+                }
+                //End Of Generate Code
+
                 if(mysqli_num_rows($EventNows) > 0){
                     while($dr = mysqli_fetch_assoc($EventNows)){
                         $idEvent = $dr['event_now'];
                     }
-                    $insert = "INSERT INTO rsvp(idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
-                                VALUES ('$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',0,0,0,'NONE', 1)";
+                    $insert = "INSERT INTO rsvp(idRsvp, idEvent, customerName, companyName, title, email, phoneNumber, created, modified,walkIn,isAttend,print,printer_name, status) 
+                                VALUES ('$AutoCode', '$idEvent','$_POST[customerName]', '$_POST[companyName]', '$_POST[title]', '$_POST[email]', '$_POST[phoneNumber]','$dateStamp', '$dateStamp',0,0,0,'NONE', 1)";
                     mysqli_query($conn, $insert);
                     echo '<script type="text/javascript">'; 
                     echo 'alert("Check Your Mailbox!");'; 
@@ -104,17 +130,16 @@ if(isset($_POST['done_Rspv'])){
 </head>
 <!-- ini untuk posisi menu navigasi -->
 <body>
-<div class="header-row" id="header-row" style="padding: 0px; overflow:hidden; height:250px;">
-<div class="container-fluid" style="padding: 0px;"  align="center">
-    <div class="row"> 
-    <div class="col-xs-12"> 
-            <a class="navbar-brand logo" href="">
+<div id="header-wrap" class="clr">
+    <header id="header" class="site-header clr container" role="banner">      
         <!-- place your image here -->
-               <img src="../bootstrap/img/Bliss Windows XP.jpg" alt="company logo" style="width: 100%;" class="img-responsive">
-            </a> 
-         </div>     
-      </div>
-   </div>
+                <?php 
+                    $query = "SELECT * FROM custom_front WHERE id_front='front'";
+                    $hasil = mysqli_query($conn, $query);
+                    if(mysqli_num_rows($hasil) > 0){
+                        while($row = mysqli_fetch_assoc($hasil)){
+                            if($row['status'] != 0){ ?>
+               <img src="<?php echo $row['dir_name'].$row['img_name']; ?>" alt="company logo" style="width: 100%;" class="img-responsive">
 </div>
     <form class="form-horizontal" role="form" action="" method="post">
     <h2 align="center">Registration Form</h2>
@@ -165,7 +190,7 @@ if(isset($_POST['done_Rspv'])){
     <div class="panel-footer">
         <div class="footer-bottom">
             <div class="container">
-                <center><a href="#">&copy; Copyright 2016 #NgeCodeAja</a></center>
+                <center><a href="#"><?php echo $row["footer_name"]; } } }?></a></center>
             </div>
         </div>
     </div>
